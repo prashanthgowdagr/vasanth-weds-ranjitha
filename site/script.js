@@ -1,0 +1,189 @@
+(() => {
+  const W = window.WEDDING;
+  const $ = (id) => document.getElementById(id);
+  const text = (id, v) => { $(id).textContent = v; };
+  const el = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; };
+  const params = new URLSearchParams(location.search);
+
+  // ---------- Date helpers (event strings are local venue time) ----------
+  const MONTH = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  const DAY = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  const parse = (s) => { const [d, t] = s.split("T"), [y, m, dd] = d.split("-").map(Number), [hh, mm] = t.split(":").map(Number); return { y, m, d: dd, hh, mm, t }; };
+  const abs = (s) => new Date(`${s}:00${W.tz}`);
+  const weekday = (p) => DAY[new Date(Date.UTC(p.y, p.m - 1, p.d)).getUTCDay()];
+  const dateBlock = (e) => {
+    const p = parse(e.start), w = el("div", "dateline");
+    const a = el("div", "at"); a.append(el("span", null, `AT ${p.t}`), el("span", null, weekday(p)));
+    const r = el("div", "row"), my = el("div", "my");
+    my.append(el("div", null, MONTH[p.m - 1]), el("div", null, String(p.y)));
+    r.append(el("span", "day", String(p.d).padStart(2, "0")), el("span", "rule"), my);
+    w.append(a, r); return w;
+  };
+  const main = W.events[W.mainEvent], rec = W.events[W.receptionEvent], mp = parse(main.start);
+  const days = W.events.map((e) => parse(e.start)).filter((p) => p.m === mp.m && p.y === mp.y).map((p) => p.d);
+  const range = days.length > 1 ? `${Math.min(...days)}–${Math.max(...days)} ${MONTH[mp.m - 1]} ${mp.y}` : `${mp.d} ${MONTH[mp.m - 1]} ${mp.y}`;
+
+  // ---------- Text ----------
+  document.title = `${W.groom} & ${W.bride} — Wedding Invitation`;
+  text("i-groom", W.groom); text("i-bride", W.bride); text("i-date", range);
+  text("t-groom", W.groom); text("t-bride", W.bride);
+  text("groom-full", W.groom); text("bride-full", W.bride);
+  text("announcement", W.announcement); text("closing", W.closing);
+
+  // Parents (either side may be null)
+  const par = $("parents"), sides = [W.groomParents, W.brideParents].filter(Boolean);
+  if (!sides.length) par.hidden = true;
+  sides.forEach((p, i) => {
+    if (i) par.append(el("span", "vline"));
+    const d = el("div"); d.append(el("div", null, p.title)); p.lines.forEach((l) => d.append(el("b", null, l))); par.append(d);
+  });
+
+  // ---------- Personalised guest (?guest=Anita) ----------
+  const guest = params.get("guest");
+  if (guest) text("i-guest", `Dear ${guest.slice(0, 40)}, you are cordially invited`);
+
+  // ---------- Images: real photo (webp) if present, else sample placeholder ----------
+  document.querySelectorAll("[data-img]").forEach((node) => {
+    const n = node.dataset.img, probe = new Image();
+    probe.onload = () => (node.style.backgroundImage = `url(img/${n}.webp)`);
+    probe.onerror = () => (node.style.backgroundImage = `url(img/placeholder/${n}.svg)`);
+    probe.src = `img/${n}.webp`;
+  });
+
+  // ---------- Floating petals on the landing page ----------
+  const pc = $("petals"), cols = ["#7f9e55", "#f2b7c2", "#9db77a", "#f6cdd5"];
+  const petalSvg = '<svg viewBox="0 0 24 24">' + [0, 60, 120, 180, 240, 300].map((r) => `<ellipse cx="12" cy="6" rx="2.6" ry="5" transform="rotate(${r} 12 12)"/>`).join("") + "</svg>";
+  for (let i = 0; i < 16; i++) {
+    const p = el("i"); p.style.cssText = `left:${Math.random() * 100}%;--s:${10 + Math.random() * 16}px;--c:${cols[i % 4]};--d:${9 + Math.random() * 9}s;--dl:${-Math.random() * 14}s;--x:${(Math.random() - .5) * 120}px`;
+    p.innerHTML = petalSvg; pc.append(p);
+  }
+
+  // ---------- Music: starts on OPEN (user gesture), button toggles ----------
+  const music = new Audio("audio/music.mp3"), mbtn = $("music-btn");
+  music.loop = true; music.volume = 0.6; music.preload = "auto";
+  let hasAudio = false;
+  music.addEventListener("canplay", () => { hasAudio = true; if (document.body.classList.contains("started")) mbtn.hidden = false; });
+  const syncBtn = () => mbtn.classList.toggle("off", music.paused);
+  music.addEventListener("play", syncBtn); music.addEventListener("pause", syncBtn);
+  mbtn.addEventListener("click", () => (music.paused ? music.play().catch(() => {}) : music.pause()));
+  document.addEventListener("visibilitychange", () => { if (document.hidden && !music.paused) { music.pause(); music.dataset.resume = "1"; } else if (!document.hidden && music.dataset.resume) { delete music.dataset.resume; music.play().catch(() => {}); } });
+
+  const openInvite = (withMusic) => {
+    $("intro").classList.add("open"); document.body.classList.remove("locked"); document.body.classList.add("started");
+    scrollTo(0, 0);
+    if (withMusic) music.play().catch(() => {});   // allowed: this runs inside the Open click
+    if (hasAudio) mbtn.hidden = false;
+  };
+  if (params.has("skipintro")) openInvite(false);   // for previews/testing
+  $("open-btn").addEventListener("click", () => openInvite(true));
+
+  // ---------- Ceremonies ----------
+  W.events.forEach((e) => {
+    const box = el("div", "cer reveal"); box.append(el("h3", null, e.title), el("h3", null, e.venue), dateBlock(e)); $("ceremonies").append(box);
+  });
+
+  // ---------- Reception info ----------
+  $("reception-date").append(dateBlock(rec));
+  if (W.welcomeTime) { const d = el("div"); d.append(el("small", null, "WELCOME"), el("b", null, W.welcomeTime)); $("times").append(d); }
+  { const d = el("div"); d.append(el("small", null, "RECEPTION"), el("b", null, parse(rec.start).t)); $("times").append(d); }
+
+  // ---------- Countdown ----------
+  const target = abs(main.start).getTime();
+  const tick = () => {
+    const s = Math.max(0, Math.floor((target - Date.now()) / 1000));
+    text("countdown", `${Math.floor(s / 86400)} days ${Math.floor(s / 3600) % 24} hours ${Math.floor(s / 60) % 60} min ${s % 60} sec`);
+  };
+  tick(); setInterval(tick, 1000);
+
+  // ---------- Month calendar (heart on the main day, underline on other event days) ----------
+  const cal = $("cal"), evDays = new Set(W.events.map((e) => parse(e.start)).filter((p) => p.m === mp.m && p.y === mp.y).map((p) => p.d));
+  cal.append(el("h4", null, `${MONTH[mp.m - 1]} ${mp.y}`));
+  const grid = el("div", "g");
+  ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"].forEach((d) => grid.append(el("div", "h", d)));
+  const lead = (new Date(Date.UTC(mp.y, mp.m - 1, 1)).getUTCDay() + 6) % 7, dim = new Date(Date.UTC(mp.y, mp.m, 0)).getUTCDate();
+  for (let i = 0; i < lead; i++) grid.append(el("div"));
+  for (let d = 1; d <= dim; d++) {
+    const c = el("div", "d" + (d === mp.d ? " on" : evDays.has(d) ? " ev" : ""));
+    if (d === mp.d) { c.innerHTML = '<svg viewBox="0 0 24 24"><use href="#heart"/></svg>'; c.append(el("span", null, d)); } else c.textContent = d;
+    grid.append(c);
+  }
+  cal.append(grid);
+
+  // ---------- The single "Add to Calendar" (.ics containing every event) ----------
+  const icsDate = (d) => new Date(d).toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
+  const esc = (s) => s.replace(/[\\;,]/g, "\\$&").replace(/\n/g, "\\n");
+  $("cal-btn").addEventListener("click", () => {
+    const where = `${W.venue.name}, ${W.venue.address}`;
+    const ev = W.events.flatMap((e) => {
+      const s = abs(e.start), en = e.end ? abs(e.end) : new Date(s.getTime() + 3 * 3600e3);
+      return ["BEGIN:VEVENT", `UID:${icsDate(s)}-${e.title.replace(/\W/g, "")}@wedding-invite`, `DTSTAMP:${icsDate(Date.now())}`, `DTSTART:${icsDate(s)}`, `DTEND:${icsDate(en)}`,
+        `SUMMARY:${esc(`${e.title} — ${W.groom} & ${W.bride}`)}`, `DESCRIPTION:${esc(e.desc || "")}`, `LOCATION:${esc(where)}`, "END:VEVENT"];
+    });
+    const ics = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Wedding Invite//EN", ...ev, "END:VCALENDAR"].join("\r\n");
+    const a = el("a"); a.href = URL.createObjectURL(new Blob([ics], { type: "text/calendar" })); a.download = "wedding.ics"; a.click(); URL.revokeObjectURL(a.href);
+  });
+
+  // ---------- Venue: map + the single "Get directions" ----------
+  const q = encodeURIComponent(W.venue.mapQuery);
+  text("venue-title", W.venue.title); text("venue-name", W.venue.name); text("venue-addr", W.venue.address);
+  $("map").src = `https://maps.google.com/maps?q=${q}&output=embed`;
+  $("dir-btn").href = `https://www.google.com/maps/dir/?api=1&destination=${q}`;
+
+  // ---------- Schedule ----------
+  if (W.schedule && W.schedule.length) {
+    $("schedule").hidden = false;
+    W.schedule.forEach((s) => { const li = el("li", "reveal"), b = el("b"); if (s.day) b.append(el("small", null, s.day)); b.append(s.time); li.append(b, el("i"), el("span", null, s.label)); $("timeline").append(li); });
+  }
+
+  // ---------- Post-wedding album ----------
+  if (W.postWedding && W.albumUrl) { $("album").hidden = false; text("album-note", W.albumNote); $("album-link").href = W.albumUrl; }
+
+  // ---------- Gallery coverflow (gallery.json is written by `npm run photos`) ----------
+  fetch("gallery.json").then((r) => r.json()).then((items) => {
+    if (!items.length) return ($("gallery").hidden = true);
+    const flow = $("flow"); let cur = 0;
+    const cards = items.map((it, i) => {
+      const c = el("button", "card"); c.type = "button"; c.setAttribute("aria-label", `Photo ${i + 1}`);
+      const img = el("img"); img.src = it.thumb; img.alt = it.alt || `Photo ${i + 1}`; img.loading = "lazy"; c.append(img);
+      c.addEventListener("click", () => { if (i !== cur) go(i); });
+      flow.append(c); return c;
+    });
+    const go = (n) => { cur = (n + items.length) % items.length; render(); };
+    const render = () => {
+      cards.forEach((c, i) => {
+        let d = i - cur; if (d > items.length / 2) d -= items.length; if (d < -items.length / 2) d += items.length;
+        const a = Math.abs(d), side = Math.sign(d);
+        c.style.transform = a > 1 ? `translateX(${side * 45}%) scale(.7)` : `translateX(${side * 50}%) scale(${1 - a * .14}) rotateY(${-side * 20 * a}deg)`;
+        c.style.opacity = a > 1 ? 0 : 1; c.style.zIndex = 10 - a; c.style.filter = a ? "brightness(.82)" : "none"; c.style.pointerEvents = a > 1 ? "none" : "auto";
+      });
+      text("counter", `${cur + 1} / ${items.length}`);
+    };
+    let x0 = null;
+    flow.addEventListener("pointerdown", (e) => (x0 = e.clientX));
+    flow.addEventListener("pointerup", (e) => { if (x0 != null && Math.abs(e.clientX - x0) > 40) go(cur + (e.clientX < x0 ? 1 : -1)); x0 = null; });
+    document.addEventListener("keydown", (e) => { if (e.key === "ArrowRight") go(cur + 1); if (e.key === "ArrowLeft") go(cur - 1); });
+    render();
+  }).catch(() => ($("gallery").hidden = true));
+
+  // ---------- Lotus decorations on every section ----------
+  const lotus = (host, items) => {
+    const layer = el("div", "lt-layer");
+    items.forEach(([name, css, cls]) => { const i = el("img", "lt " + (cls || "")); i.src = `img/decor/${name}.svg`; i.alt = ""; i.setAttribute("aria-hidden", "true"); i.style.cssText = css; layer.append(i); });
+    host.prepend(layer);
+  };
+  const divider = (host, before) => { const d = el("img", "divider-img"); d.src = "img/decor/divider.svg"; d.alt = ""; d.setAttribute("aria-hidden", "true"); host.insertBefore(d, before); };
+  const R = (top, w = 150, rot = 0) => `top:${top};right:-${Math.round(w * .38)}px;width:${w}px;transform:rotate(${rot}deg)`;
+  const L = (top, w = 150, rot = 0) => `top:${top};left:-${Math.round(w * .38)}px;width:${w}px;transform:scaleX(-1) rotate(${-rot}deg)`;
+  const WM = "top:50%;left:50%;width:min(135%,720px);transform:translate(-50%,-50%)";
+  lotus($("home"), [["watermark", WM, "wm"], ["corner", R("-28px", 175)], ["corner", L("66%", 125, 8)]]);
+  lotus($("ceremony"), [["watermark", "top:62%;left:50%;width:min(150%,760px);transform:translate(-50%,-50%)", "wm"], ["corner", R("2%", 130, 6)], ["corner", L("46%", 140, -6)], ["corner", R("74%", 130, 10)]]);
+  divider($("ceremony"), document.querySelector("#ceremony .cart"));
+  lotus($("gallery"), [["corner", L("-2%", 140, 6)], ["corner", R("52%", 130, -6)]]);
+  lotus($("reception"), [["watermark", WM, "wm"], ["corner", R("12%", 140, 8)], ["corner", L("50%", 140, -6)], ["corner", R("84%", 120, 4)]]);
+  lotus($("venue"), [["corner", R("4%", 130, 8)], ["corner", L("60%", 140, -6)]]);
+  lotus($("schedule"), [["watermark", WM, "wm"], ["corner", R("10%", 130, 6)], ["corner", L("56%", 140, -8)]]);
+
+  // ---------- Reveal on scroll ----------
+  const io = new IntersectionObserver((es) => es.forEach((x) => x.isIntersecting && (x.target.classList.add("in"), io.unobserve(x.target))), { threshold: 0.12 });
+  document.querySelectorAll(".reveal").forEach((n) => io.observe(n));
+})();

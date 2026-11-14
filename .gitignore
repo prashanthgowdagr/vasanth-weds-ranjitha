@@ -1,0 +1,4 @@
+node_modules/
+.DS_Store
+# Optional: keep huge unedited originals out of git (see README "Photos")
+# photos/originals/

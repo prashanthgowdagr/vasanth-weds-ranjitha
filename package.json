@@ -1,0 +1,13 @@
+{
+  "name": "wedding-invite",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "photos": "node scripts/optimize.mjs",
+    "dev": "npx --yes serve site -l 5173"
+  },
+  "devDependencies": {
+    "sharp": "^0.33.5"
+  }
+}

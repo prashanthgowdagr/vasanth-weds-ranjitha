@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vasanth & Ranjitha — Wedding Invitation</title>
+  <meta name="description" content="You are invited to the wedding of Vasanth & Ranjitha. 28–29 November 2026, Hiriyur.">
+  <meta name="theme-color" content="#cfdcb8">
+
+  <!-- Link preview (WhatsApp / iMessage). Replace with an absolute URL once deployed. -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Vasanth & Ranjitha — Wedding Invitation">
+  <meta property="og:description" content="28–29 November 2026 · Hiriyur. Join us in celebrating.">
+  <meta property="og:image" content="img/og.jpg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Lora:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="locked">
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <!-- notched-corner photo frame -->
+      <clipPath id="notch" clipPathUnits="objectBoundingBox">
+        <path d="M0.12,0 H0.88 Q0.9,0 0.9,0.02 Q0.9,0.068 0.94,0.068 Q1,0.068 1,0.1 V0.9 Q1,0.932 0.94,0.932 Q0.9,0.932 0.9,0.98 Q0.9,1 0.88,1 H0.12 Q0.1,1 0.1,0.98 Q0.1,0.932 0.06,0.932 Q0,0.932 0,0.9 V0.1 Q0,0.068 0.06,0.068 Q0.1,0.068 0.1,0.02 Q0.1,0 0.12,0 Z"/>
+      </clipPath>
+      <symbol id="heart" viewBox="0 0 24 24"><path d="M12 21s-8-5.2-8-11a4.6 4.6 0 0 1 8-3 4.6 4.6 0 0 1 8 3c0 5.8-8 11-8 11z"/></symbol>
+      <symbol id="nav" viewBox="0 0 24 24"><path d="M21 3 3 10.5l7 2.5 2.5 7z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+    </defs>
+  </svg>
+
+  <!-- ===== Landing: tap OPEN ===== -->
+  <div id="intro" class="intro" role="dialog" aria-label="Wedding invitation">
+    <div id="petals" aria-hidden="true"></div>
+    <div class="intro-card">
+      <img class="ic-tl" src="img/decor/corner.svg" alt="">
+      <img class="ic-br" src="img/decor/corner.svg" alt="">
+      <div class="heart-badge"><svg width="30" height="30"><use href="#heart" fill="#fff"/></svg></div>
+      <p class="script i-name" id="i-groom"></p>
+      <p class="script i-amp">&amp;</p>
+      <p class="script i-name" id="i-bride"></p>
+      <div class="divider"><i></i><b>❦</b><i></i></div>
+      <p class="i-date" id="i-date"></p>
+      <p class="i-cord" id="i-guest">Cordially Invites</p>
+      <button id="open-btn" class="pill">Open</button>
+    </div>
+  </div>
+
+  <button id="music-btn" class="music" aria-label="Pause or play music" hidden>
+    <svg width="20" height="20" viewBox="0 0 20 20"><g fill="#fff"><rect class="bar" x="3" y="9" width="3" height="8"/><rect class="bar" x="8.5" y="4" width="3" height="13"/><rect class="bar" x="14" y="7" width="3" height="10"/></g></svg>
+  </button>
+
+  <div class="page" id="page">
+
+    <!-- ===== Opening page: names + photo ===== -->
+    <header class="hero lt-host" id="home">
+      <span class="amp-mark script" aria-hidden="true">&amp;</span>
+      <p class="top-name left" id="t-groom"></p>
+      <p class="top-name right" id="t-bride"></p>
+      <div class="photo">
+        <div class="photo-img" data-img="hero"></div>
+        <svg class="photo-line" viewBox="0 0 1 1" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0.12,0 H0.88 Q0.9,0 0.9,0.02 Q0.9,0.068 0.94,0.068 Q1,0.068 1,0.1 V0.9 Q1,0.932 0.94,0.932 Q0.9,0.932 0.9,0.98 Q0.9,1 0.88,1 H0.12 Q0.1,1 0.1,0.98 Q0.1,0.932 0.06,0.932 Q0,0.932 0,0.9 V0.1 Q0,0.068 0.06,0.068 Q0.1,0.068 0.1,0.02 Q0.1,0 0.12,0 Z" fill="none" vector-effect="non-scaling-stroke"/>
+        </svg>
+        <img class="bouquet" src="img/decor/bouquet.svg" alt="" aria-hidden="true">
+      </div>
+    </header>
+
+    <section class="block lt-host" id="ceremony">
+      <h2 class="cart">Ceremony Info</h2>
+      <div class="parents" id="parents"></div>
+      <p class="caps announce" id="announcement"></p>
+      <p class="script full" id="groom-full"></p>
+      <p class="script amp">&amp;</p>
+      <p class="script full" id="bride-full"></p>
+      <div id="ceremonies"></div>
+    </section>
+
+    <section class="block lt-host" id="gallery">
+      <h2 class="cart">Photo Gallery</h2>
+      <div class="flow" id="flow" aria-roledescription="carousel"></div>
+      <p class="muted center counter" id="counter"></p>
+    </section>
+
+    <section class="block lt-host" id="reception">
+      <h2 class="cart">Reception Info</h2>
+      <p class="caps strong">The reception will take place at:</p>
+      <div id="reception-date"></div>
+      <div class="times" id="times"></div>
+      <p class="cd-title">Countdown</p>
+      <p class="cd" id="countdown" aria-live="off"></p>
+      <div class="cal" id="cal"></div>
+      <p class="center"><button id="cal-btn" class="link" type="button">Add to Calendar</button></p>
+    </section>
+
+    <section class="block lt-host" id="venue">
+      <h2 class="cart" id="venue-title"></h2>
+      <p class="venue-name" id="venue-name"></p>
+      <p class="venue-addr" id="venue-addr"></p>
+      <iframe id="map" class="map" title="Venue map" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      <p class="center"><a id="dir-btn" class="dir" target="_blank" rel="noopener"><svg width="18" height="18"><use href="#nav"/></svg> Get directions</a></p>
+    </section>
+
+    <section class="block lt-host" id="schedule" hidden>
+      <h2 class="cart">Wedding Day Schedule</h2>
+      <ol class="timeline" id="timeline"></ol>
+    </section>
+
+    <section class="block plain" id="album" hidden>
+      <h2 class="plain-h">Photo Album</h2>
+      <p class="center" id="album-note"></p>
+      <p class="center"><a id="album-link" class="pill" target="_blank" rel="noopener">Open full album</a></p>
+    </section>
+
+    <footer class="foot">
+      <p id="closing"></p>
+      <img class="foot-lotus" src="img/decor/footer.svg" alt="" aria-hidden="true">
+    </footer>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

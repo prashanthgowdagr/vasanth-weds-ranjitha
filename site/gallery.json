@@ -1,0 +1,58 @@
+[
+  {
+    "thumb": "img/placeholder/g1.svg",
+    "full": "img/placeholder/g1.svg",
+    "w": 800,
+    "h": 1000,
+    "alt": "Sample photo 1"
+  },
+  {
+    "thumb": "img/placeholder/g2.svg",
+    "full": "img/placeholder/g2.svg",
+    "w": 800,
+    "h": 1000,
+    "alt": "Sample photo 2"
+  },
+  {
+    "thumb": "img/placeholder/g3.svg",
+    "full": "img/placeholder/g3.svg",
+    "w": 800,
+    "h": 1000,
+    "alt": "Sample photo 3"
+  },
+  {
+    "thumb": "img/placeholder/g4.svg",
+    "full": "img/placeholder/g4.svg",
+    "w": 800,
+    "h": 1000,
+    "alt": "Sample photo 4"
+  },
+  {
+    "thumb": "img/placeholder/g5.svg",
+    "full": "img/placeholder/g5.svg",
+    "w": 800,
+    "h": 1000,
+    "alt": "Sample photo 5"
+  },
+  {
+    "thumb": "img/placeholder/g6.svg",
+    "full": "img/placeholder/g6.svg",
+    "w": 800,
+    "h": 1000,
+    "alt": "Sample photo 6"
+  },
+  {
+    "thumb": "img/placeholder/g7.svg",
+    "full": "img/placeholder/g7.svg",
+    "w": 800,
+    "h": 1000,
+    "alt": "Sample photo 7"
+  },
+  {
+    "thumb": "img/placeholder/g8.svg",
+    "full": "img/placeholder/g8.svg",
+    "w": 800,
+    "h": 1000,
+    "alt": "Sample photo 8"
+  }
+]
