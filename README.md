@@ -3,7 +3,7 @@
 A static, mobile-first wedding invitation website with its own lotus artwork. No framework, no build step for the page.
 
 Flow: **OPEN card** (floating petals) -> tap **Open** -> the invitation opens and the **music starts** -> opening page with the names and a photo in a notched frame.
-Sections: Ceremony Info, Photo Gallery, Reception Info (countdown + calendar), Wedding Venue (map), Wedding Day Schedule, closing.
+Look: frosted-glass column over a soft floral garden background. Sections: Ceremony Info, **Save the Date** (a flower gate opens as you scroll, petals burst, highlighted countdown), Photo Gallery, Reception Info (calendar), Wedding Venue (map), Wedding Day Schedule, closing.
 No RSVP, guestbook, dress code or gift box. One **Add to Calendar** and one **Get directions**.
 
 ## Run locally
@@ -41,4 +41,4 @@ Set `postWedding: true` and `albumUrl` in `site/config.js` to link a full-resolu
 - **GitHub Pages:** deploy from a branch or a workflow that uploads `site/`.
 
 ## Artwork
-All lotus illustrations in `site/img/decor/` are original SVGs made for this project.
+All flower and lotus illustrations in `site/img/` are original SVGs made for this project. `tools/gen_flowers.py` regenerates the garden background, side edges and flower gate (`python3 tools/gen_flowers.py`).

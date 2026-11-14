@@ -19,6 +19,9 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body class="locked">
+  <div class="bg-garden" aria-hidden="true"></div>
+  <img class="bg-edge l" src="img/decor/edge.svg" alt="" aria-hidden="true">
+  <img class="bg-edge r" src="img/decor/edge.svg" alt="" aria-hidden="true">
 
   <svg width="0" height="0" style="position:absolute" aria-hidden="true">
     <defs>
@@ -78,6 +81,29 @@
       <div id="ceremonies"></div>
     </section>
 
+    <!-- ===== Save the Date: flower gate opens as you scroll ===== -->
+    <section class="opening" id="date">
+      <div class="opening-track" id="track">
+        <div class="opening-stage" id="stage">
+          <div class="stage-content">
+            <p class="eyebrow">Our celebration</p>
+            <h2 class="script savedate">Save the Date</h2>
+            <div class="datecard">
+              <p class="script month" id="d-month"></p>
+              <p class="bigday" id="d-day"></p>
+              <p class="year" id="d-year"></p>
+              <p class="cd-label">Countdown</p>
+              <div class="count" id="countdown" aria-live="off"></div>
+            </div>
+          </div>
+          <div class="door l" aria-hidden="true"><img src="img/decor/door.svg" alt=""></div>
+          <div class="door r" aria-hidden="true"><img src="img/decor/door.svg" alt=""></div>
+          <p class="hint" aria-hidden="true">Scroll to open <span>&#8595;</span></p>
+          <div class="confetti" id="confetti" aria-hidden="true"></div>
+        </div>
+      </div>
+    </section>
+
     <section class="block lt-host" id="gallery">
       <h2 class="cart">Photo Gallery</h2>
       <div class="flow" id="flow" aria-roledescription="carousel"></div>
@@ -89,8 +115,6 @@
       <p class="caps strong">The reception will take place at:</p>
       <div id="reception-date"></div>
       <div class="times" id="times"></div>
-      <p class="cd-title">Countdown</p>
-      <p class="cd" id="countdown" aria-live="off"></p>
       <div class="cal" id="cal"></div>
       <p class="center"><button id="cal-btn" class="link" type="button">Add to Calendar</button></p>
     </section>

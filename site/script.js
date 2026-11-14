@@ -87,13 +87,43 @@
   if (W.welcomeTime) { const d = el("div"); d.append(el("small", null, "WELCOME"), el("b", null, W.welcomeTime)); $("times").append(d); }
   { const d = el("div"); d.append(el("small", null, "RECEPTION"), el("b", null, parse(rec.start).t)); $("times").append(d); }
 
-  // ---------- Countdown ----------
-  const target = abs(main.start).getTime();
+  // ---------- Save the Date card + highlighted countdown ----------
+  text("d-month", MONTH[mp.m - 1]); text("d-day", String(mp.d)); text("d-year", String(mp.y).split("").join(" "));
+  const target = abs(main.start).getTime(), cd = $("countdown");
   const tick = () => {
     const s = Math.max(0, Math.floor((target - Date.now()) / 1000));
-    text("countdown", `${Math.floor(s / 86400)} days ${Math.floor(s / 3600) % 24} hours ${Math.floor(s / 60) % 60} min ${s % 60} sec`);
+    const v = [[Math.floor(s / 86400), "Days"], [Math.floor(s / 3600) % 24, "Hours"], [Math.floor(s / 60) % 60, "Min"], [s % 60, "Sec"]];
+    cd.replaceChildren(...v.map(([n, l]) => { const d = el("div"); d.append(el("b", null, String(n).padStart(2, "0")), el("small", null, l)); return d; }));
   };
   tick(); setInterval(tick, 1000);
+
+  // ---------- Flower gate: doors open with scroll, petals burst when open ----------
+  (() => {
+    const track = $("track"), stage = $("stage"), box = $("confetti");
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const cols = ["#f7c6d2", "#ffffff", "#e7c86e", "#f2a9bd", "#cfe3b5", "#fbe3e8"];
+    let fired = false;
+    const burst = () => {
+      box.replaceChildren();
+      for (let i = 0; i < 90; i++) {
+        const q = el("i"), a = Math.random() * Math.PI - Math.PI, r = 110 + Math.random() * 250, w = 6 + Math.random() * 7;
+        q.style.cssText = `--x:${Math.cos(a) * r}px;--y:${Math.sin(a) * r * .9}px;--rot:${Math.random() * 720 - 360}deg;--w:${w}px;--h:${w * (Math.random() < .5 ? 1 : 2.2)}px;--c:${cols[i % cols.length]};--r:${Math.random() < .5 ? "50% 0 50% 0" : "2px"};animation-delay:${Math.random() * .25}s`;
+        box.append(q);
+      }
+      setTimeout(() => box.replaceChildren(), 3400);
+    };
+    let ticking = false;
+    const update = () => {
+      ticking = false;
+      const r = track.getBoundingClientRect(), total = track.offsetHeight - innerHeight;
+      const p = Math.min(1, Math.max(0, -r.top / total) / 0.55);
+      stage.style.setProperty("--p", p.toFixed(3));
+      if (p > 0.92 && !fired) { fired = true; burst(); }
+      if (p < 0.3) fired = false;
+    };
+    addEventListener("scroll", () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+    addEventListener("resize", update); update();
+  })();
 
   // ---------- Month calendar (heart on the main day, underline on other event days) ----------
   const cal = $("cal"), evDays = new Set(W.events.map((e) => parse(e.start)).filter((p) => p.m === mp.m && p.y === mp.y).map((p) => p.d));
@@ -174,14 +204,13 @@
   const divider = (host, before) => { const d = el("img", "divider-img"); d.src = "img/decor/divider.svg"; d.alt = ""; d.setAttribute("aria-hidden", "true"); host.insertBefore(d, before); };
   const R = (top, w = 150, rot = 0) => `top:${top};right:-${Math.round(w * .38)}px;width:${w}px;transform:rotate(${rot}deg)`;
   const L = (top, w = 150, rot = 0) => `top:${top};left:-${Math.round(w * .38)}px;width:${w}px;transform:scaleX(-1) rotate(${-rot}deg)`;
-  const WM = "top:50%;left:50%;width:min(135%,720px);transform:translate(-50%,-50%)";
-  lotus($("home"), [["watermark", WM, "wm"], ["corner", R("-28px", 175)], ["corner", L("66%", 125, 8)]]);
-  lotus($("ceremony"), [["watermark", "top:62%;left:50%;width:min(150%,760px);transform:translate(-50%,-50%)", "wm"], ["corner", R("2%", 130, 6)], ["corner", L("46%", 140, -6)], ["corner", R("74%", 130, 10)]]);
+  lotus($("home"), [["corner", R("-28px", 150)], ["corner", L("66%", 110, 8)]]);
+  lotus($("ceremony"), [["corner", R("6%", 110, 6)], ["corner", L("62%", 120, -6)]]);
   divider($("ceremony"), document.querySelector("#ceremony .cart"));
-  lotus($("gallery"), [["corner", L("-2%", 140, 6)], ["corner", R("52%", 130, -6)]]);
-  lotus($("reception"), [["watermark", WM, "wm"], ["corner", R("12%", 140, 8)], ["corner", L("50%", 140, -6)], ["corner", R("84%", 120, 4)]]);
-  lotus($("venue"), [["corner", R("4%", 130, 8)], ["corner", L("60%", 140, -6)]]);
-  lotus($("schedule"), [["watermark", WM, "wm"], ["corner", R("10%", 130, 6)], ["corner", L("56%", 140, -8)]]);
+  lotus($("gallery"), [["corner", L("-2%", 120, 6)]]);
+  lotus($("reception"), [["corner", R("12%", 120, 8)], ["corner", L("68%", 120, -6)]]);
+  lotus($("venue"), [["corner", R("6%", 110, 8)]]);
+  lotus($("schedule"), [["corner", R("10%", 110, 6)], ["corner", L("56%", 120, -8)]]);
 
   // ---------- Reveal on scroll ----------
   const io = new IntersectionObserver((es) => es.forEach((x) => x.isIntersecting && (x.target.classList.add("in"), io.unobserve(x.target))), { threshold: 0.12 });

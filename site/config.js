@@ -7,7 +7,7 @@ window.WEDDING = {
 
   // Parents block under "Ceremony Info". Set one to null to hide it.
   groomParents: null,   // e.g. { title: "Mr. & Mrs.", lines: ["Father Name", "Mother Name"] }
-  brideParents: { title: "Daughter of", lines: ["Leelavathi A", "Jagadish G"] },
+  brideParents: null,
 
   announcement: "Together with our families\nwe invite you to our wedding",
 
