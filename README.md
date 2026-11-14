@@ -31,7 +31,8 @@ Drop originals into `photos/` and run `npm run photos`:
 | `photos/og.jpg` | WhatsApp / link preview (optional; made from hero if missing) |
 | `photos/gallery/*.jpg` | Photo Gallery carousel (any names, sorted alphabetically) |
 
-Originals are never modified; optimised WebP copies are written to `site/img`. Until you add photos, the page shows sample placeholders.
+Originals are never modified; optimised WebP copies are written to `site/img` (old gallery outputs are cleaned each run).
+The `photos/` folder currently holds **SAMPLE images** (made by `node tools/make_samples.mjs`). Replace them with the real photos and run `npm run photos`.
 
 ## After the wedding
 Set `postWedding: true` and `albumUrl` in `site/config.js` to link a full-resolution album (Google Photos / Drive / R2).

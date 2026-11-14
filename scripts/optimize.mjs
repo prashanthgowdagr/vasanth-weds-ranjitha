@@ -6,7 +6,7 @@
 //
 // Originals are never modified. Run:  npm run photos
 import sharp from "sharp";
-import { readdir, mkdir, writeFile, stat } from "node:fs/promises";
+import { readdir, mkdir, writeFile, stat, rm } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -40,6 +40,8 @@ const files = ((await exists(gdir)) ? await readdir(gdir) : []).filter((f) => EX
 if (!files.length) {
   console.log("  - no photos in photos/gallery, keeping existing gallery.json (sample cards)");
 } else {
+  await rm(path.join(OUT, "gallery"), { recursive: true, force: true });   // drop stale outputs from earlier runs
+  await mkdir(path.join(OUT, "gallery"), { recursive: true });
   const items = [];
   for (const f of files) {
     const n = base(f).replace(/[^a-zA-Z0-9_-]+/g, "-"), input = path.join(gdir, f);

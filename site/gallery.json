@@ -1,58 +1,58 @@
 [
   {
-    "thumb": "img/placeholder/g1.svg",
-    "full": "img/placeholder/g1.svg",
-    "w": 800,
-    "h": 1000,
-    "alt": "Sample photo 1"
+    "thumb": "img/gallery/01-thumb.webp",
+    "full": "img/gallery/01.webp",
+    "w": 600,
+    "h": 750,
+    "alt": "01"
   },
   {
-    "thumb": "img/placeholder/g2.svg",
-    "full": "img/placeholder/g2.svg",
-    "w": 800,
-    "h": 1000,
-    "alt": "Sample photo 2"
+    "thumb": "img/gallery/02-thumb.webp",
+    "full": "img/gallery/02.webp",
+    "w": 600,
+    "h": 400,
+    "alt": "02"
   },
   {
-    "thumb": "img/placeholder/g3.svg",
-    "full": "img/placeholder/g3.svg",
-    "w": 800,
-    "h": 1000,
-    "alt": "Sample photo 3"
+    "thumb": "img/gallery/03-thumb.webp",
+    "full": "img/gallery/03.webp",
+    "w": 600,
+    "h": 750,
+    "alt": "03"
   },
   {
-    "thumb": "img/placeholder/g4.svg",
-    "full": "img/placeholder/g4.svg",
-    "w": 800,
-    "h": 1000,
-    "alt": "Sample photo 4"
+    "thumb": "img/gallery/04-thumb.webp",
+    "full": "img/gallery/04.webp",
+    "w": 600,
+    "h": 600,
+    "alt": "04"
   },
   {
-    "thumb": "img/placeholder/g5.svg",
-    "full": "img/placeholder/g5.svg",
-    "w": 800,
-    "h": 1000,
-    "alt": "Sample photo 5"
+    "thumb": "img/gallery/05-thumb.webp",
+    "full": "img/gallery/05.webp",
+    "w": 600,
+    "h": 750,
+    "alt": "05"
   },
   {
-    "thumb": "img/placeholder/g6.svg",
-    "full": "img/placeholder/g6.svg",
-    "w": 800,
-    "h": 1000,
-    "alt": "Sample photo 6"
+    "thumb": "img/gallery/06-thumb.webp",
+    "full": "img/gallery/06.webp",
+    "w": 600,
+    "h": 400,
+    "alt": "06"
   },
   {
-    "thumb": "img/placeholder/g7.svg",
-    "full": "img/placeholder/g7.svg",
-    "w": 800,
-    "h": 1000,
-    "alt": "Sample photo 7"
+    "thumb": "img/gallery/07-thumb.webp",
+    "full": "img/gallery/07.webp",
+    "w": 600,
+    "h": 750,
+    "alt": "07"
   },
   {
-    "thumb": "img/placeholder/g8.svg",
-    "full": "img/placeholder/g8.svg",
-    "w": 800,
-    "h": 1000,
-    "alt": "Sample photo 8"
+    "thumb": "img/gallery/08-thumb.webp",
+    "full": "img/gallery/08.webp",
+    "w": 600,
+    "h": 600,
+    "alt": "08"
   }
 ]
