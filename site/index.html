@@ -42,14 +42,18 @@
     <div class="intro-card">
       <img class="ic-tl" src="img/decor/corner.svg" alt="">
       <img class="ic-br" src="img/decor/corner.svg" alt="">
-      <div class="heart-badge"><svg width="30" height="30"><use href="#heart" fill="#fff"/></svg></div>
+      <div class="heart-badge"><svg width="46" height="46" viewBox="0 0 24 24"><use href="#heart" fill="#e11d48"/></svg></div>
       <p class="script i-name" id="i-groom"></p>
       <p class="script i-amp">&amp;</p>
       <p class="script i-name" id="i-bride"></p>
-      <div class="divider"><i></i><b>❦</b><i></i></div>
-      <p class="i-date" id="i-date"></p>
-      <p class="i-cord" id="i-guest">Cordially Invites</p>
-      <button id="open-btn" class="pill">Open</button>
+      <svg class="infinity" viewBox="0 0 220 90" aria-label="V and R" role="img">
+        <path class="loop-glow" d="M110 45C130 10 206 6 206 45C206 84 130 80 110 45C90 10 14 6 14 45C14 84 90 80 110 45Z" fill="none" stroke="#e9c46a" stroke-width="7" stroke-opacity=".45" stroke-linejoin="round"/>
+        <path class="loop" d="M110 45C130 10 206 6 206 45C206 84 130 80 110 45C90 10 14 6 14 45C14 84 90 80 110 45Z" fill="none" stroke="#5b7d38" stroke-width="3" stroke-linejoin="round"/>
+        <text x="60" y="56" text-anchor="middle" class="inf-l">V</text>
+        <text x="160" y="56" text-anchor="middle" class="inf-l">R</text>
+      </svg>
+      <p class="i-guest" id="i-guest" hidden></p>
+      <button id="open-btn" class="pill">Open Invitation</button>
     </div>
   </div>
 
@@ -98,9 +102,9 @@
               <div class="count" id="countdown" aria-live="off"></div>
             </div>
           </div>
-          <div class="door l" aria-hidden="true"><img src="img/decor/door.svg" alt=""></div>
-          <div class="door r" aria-hidden="true"><img src="img/decor/door.svg" alt=""></div>
-          <p class="hint" aria-hidden="true">Scroll to open <span>&#8595;</span></p>
+          <div class="door l" aria-hidden="true"><img class="dimg" src="img/decor/door.svg" alt=""><img class="hand" src="img/decor/hand-open.svg" alt=""></div>
+          <div class="door r" aria-hidden="true"><img class="dimg" src="img/decor/door.svg" alt=""><img class="hand" src="img/decor/hand-open.svg" alt=""></div>
+          <div class="hint" aria-hidden="true"><img class="swipe-hand" src="img/decor/hand-point.svg" alt=""><span>Scroll to open</span></div>
           <div class="confetti" id="confetti" aria-hidden="true"></div>
         </div>
       </div>

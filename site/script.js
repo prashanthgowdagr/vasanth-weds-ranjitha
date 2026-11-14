@@ -20,12 +20,9 @@
     w.append(a, r); return w;
   };
   const main = W.events[W.mainEvent], rec = W.events[W.receptionEvent], mp = parse(main.start);
-  const days = W.events.map((e) => parse(e.start)).filter((p) => p.m === mp.m && p.y === mp.y).map((p) => p.d);
-  const range = days.length > 1 ? `${Math.min(...days)}–${Math.max(...days)} ${MONTH[mp.m - 1]} ${mp.y}` : `${mp.d} ${MONTH[mp.m - 1]} ${mp.y}`;
-
   // ---------- Text ----------
   document.title = `${W.groom} & ${W.bride} — Wedding Invitation`;
-  text("i-groom", W.groom); text("i-bride", W.bride); text("i-date", range);
+  text("i-groom", W.groom); text("i-bride", W.bride);
   text("t-groom", W.groom); text("t-bride", W.bride);
   text("groom-full", W.groom); text("bride-full", W.bride);
   text("announcement", W.announcement);
@@ -41,7 +38,7 @@
 
   // ---------- Personalised guest (?guest=Anita) ----------
   const guest = params.get("guest");
-  if (guest) text("i-guest", `Dear ${guest.slice(0, 40)}, you are cordially invited`);
+  if (guest) { text("i-guest", `Dear ${guest.slice(0, 40)}`); $("i-guest").hidden = false; }
 
   // ---------- Images: real photo (webp) if present, else sample placeholder ----------
   document.querySelectorAll("[data-img]").forEach((node) => {
@@ -85,8 +82,14 @@
 
   // ---------- Reception info ----------
   $("reception-date").append(dateBlock(rec));
-  if (W.welcomeTime) { const d = el("div"); d.append(el("small", null, "WELCOME"), el("b", null, W.welcomeTime)); $("times").append(d); }
-  { const d = el("div"); d.append(el("small", null, "RECEPTION"), el("b", null, parse(rec.start).t)); $("times").append(d); }
+  // Split row: Reception | Muhurtham (one column per event)
+  const MON3 = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  W.events.forEach((e, i) => {
+    if (i) $("times").append(el("span", "vsep"));
+    const p = parse(e.start), d = el("div");
+    d.append(el("small", null, e.title.toUpperCase()), el("b", null, p.t), el("em", null, `${p.d} ${MON3[p.m - 1]}${e.showEnd && e.end ? ` · till ${parse(e.end).t}` : ""}`));
+    $("times").append(d);
+  });
 
   // ---------- Save the Date card + highlighted countdown ----------
   text("d-month", MONTH[mp.m - 1]); text("d-day", String(mp.d)); text("d-year", String(mp.y).split("").join(" "));
