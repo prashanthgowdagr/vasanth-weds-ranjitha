@@ -28,7 +28,8 @@
   text("i-groom", W.groom); text("i-bride", W.bride); text("i-date", range);
   text("t-groom", W.groom); text("t-bride", W.bride);
   text("groom-full", W.groom); text("bride-full", W.bride);
-  text("announcement", W.announcement); text("closing", W.closing);
+  text("announcement", W.announcement);
+  text("thanks-q", W.thanksQuote); text("thanks", W.thanks); text("presence", W.presence); text("mono", `${W.groom[0]} & ${W.bride[0]}`);
 
   // Parents (either side may be null)
   const par = $("parents"), sides = [W.groomParents, W.brideParents].filter(Boolean);
@@ -125,7 +126,7 @@
     addEventListener("resize", update); update();
   })();
 
-  // ---------- Month calendar (heart on the main day, underline on other event days) ----------
+  // ---------- Month calendar (every event day is a beating pink heart) ----------
   const cal = $("cal"), evDays = new Set(W.events.map((e) => parse(e.start)).filter((p) => p.m === mp.m && p.y === mp.y).map((p) => p.d));
   cal.append(el("h4", null, `${MONTH[mp.m - 1]} ${mp.y}`));
   const grid = el("div", "g");
@@ -133,8 +134,8 @@
   const lead = (new Date(Date.UTC(mp.y, mp.m - 1, 1)).getUTCDay() + 6) % 7, dim = new Date(Date.UTC(mp.y, mp.m, 0)).getUTCDate();
   for (let i = 0; i < lead; i++) grid.append(el("div"));
   for (let d = 1; d <= dim; d++) {
-    const c = el("div", "d" + (d === mp.d ? " on" : evDays.has(d) ? " ev" : ""));
-    if (d === mp.d) { c.innerHTML = '<svg viewBox="0 0 24 24"><use href="#heart"/></svg>'; c.append(el("span", null, d)); } else c.textContent = d;
+    const on = evDays.has(d), c = el("div", "d" + (on ? " on" : ""));
+    if (on) { c.innerHTML = '<svg viewBox="0 0 24 24"><use href="#heart"/></svg>'; c.append(el("span", null, d)); } else c.textContent = d;
     grid.append(c);
   }
   cal.append(grid);
@@ -158,12 +159,6 @@
   text("venue-title", W.venue.title); text("venue-name", W.venue.name); text("venue-addr", W.venue.address);
   $("map").src = `https://maps.google.com/maps?q=${q}&output=embed`;
   $("dir-btn").href = `https://www.google.com/maps/dir/?api=1&destination=${q}`;
-
-  // ---------- Schedule ----------
-  if (W.schedule && W.schedule.length) {
-    $("schedule").hidden = false;
-    W.schedule.forEach((s) => { const li = el("li", "reveal"), b = el("b"); if (s.day) b.append(el("small", null, s.day)); b.append(s.time); li.append(b, el("i"), el("span", null, s.label)); $("timeline").append(li); });
-  }
 
   // ---------- Post-wedding album ----------
   if (W.postWedding && W.albumUrl) { $("album").hidden = false; text("album-note", W.albumNote); $("album-link").href = W.albumUrl; }
@@ -210,7 +205,13 @@
   lotus($("gallery"), [["corner", L("-2%", 120, 6)]]);
   lotus($("reception"), [["corner", R("12%", 120, 8)], ["corner", L("68%", 120, -6)]]);
   lotus($("venue"), [["corner", R("6%", 110, 8)]]);
-  lotus($("schedule"), [["corner", R("10%", 110, 6)], ["corner", L("56%", 120, -8)]]);
+
+  // ---------- Falling lotus petals (closing) ----------
+  const fall = $("petals-fall");
+  for (let i = 0; i < 14; i++) {
+    const h = el("i"); h.style.cssText = `left:${Math.random() * 100}%;--d:${9 + Math.random() * 8}s;--dl:${-Math.random() * 12}s;--x:${(Math.random() - .5) * 90}px`;
+    const im = el("img"); im.src = "img/decor/petal.svg"; im.alt = ""; im.style.width = `${Math.round(14 + Math.random() * 14)}px`; h.append(im); fall.append(h);
+  }
 
   // ---------- Reveal on scroll ----------
   const io = new IntersectionObserver((es) => es.forEach((x) => x.isIntersecting && (x.target.classList.add("in"), io.unobserve(x.target))), { threshold: 0.12 });

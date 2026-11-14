@@ -3,7 +3,7 @@
 A static, mobile-first wedding invitation website with its own lotus artwork. No framework, no build step for the page.
 
 Flow: **OPEN card** (floating petals) -> tap **Open** -> the invitation opens and the **music starts** -> opening page with the names and a photo in a notched frame.
-Look: frosted-glass column over a soft floral garden background. Sections: Ceremony Info, **Save the Date** (a flower gate opens as you scroll, petals burst, highlighted countdown), Photo Gallery, Reception Info (calendar), Wedding Venue (map), Wedding Day Schedule, closing.
+Look: frosted-glass column over a soft floral garden background. Sections: Ceremony Info, **Save the Date** (28 Nov, countdown) (a flower gate opens as you scroll, petals burst, highlighted countdown), Photo Gallery, Reception Info (calendar with beating hearts on the event days), Wedding Venue (map), closing thank-you with falling petals.
 No RSVP, guestbook, dress code or gift box. One **Add to Calendar** and one **Get directions**.
 
 ## Run locally
@@ -14,7 +14,7 @@ npm run dev        # http://localhost:5173
 Preview shortcuts: `?skipintro` skips the OPEN card, `?guest=Anita` greets a guest on the OPEN card.
 
 ## Edit the details
-Everything (names, parents, events, venue, schedule, texts) is in **`site/config.js`**.
+Everything (names, parents, events, venue, texts) is in **`site/config.js`**.
 Parents: set `groomParents` / `brideParents` to `{ title, lines }` or `null` to hide.
 
 ## Music

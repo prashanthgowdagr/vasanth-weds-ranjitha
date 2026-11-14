@@ -21,7 +21,7 @@ window.WEDDING = {
     { title: "Muhurtham", start: "2026-11-29T09:10", end: "2026-11-29T10:22", venue: "Taha Palace",
       desc: "Join us as we exchange our vows in the sacred Muhurtham ceremony." }
   ],
-  mainEvent: 1,       // event used for the countdown and the highlighted calendar day
+  mainEvent: 0,       // event used for the "Save the Date" card and the countdown (0 = Reception, 28 Nov)
   receptionEvent: 0,  // event shown in "Reception Info"
   welcomeTime: "",    // optional, e.g. "18:30" (hidden while empty)
 
@@ -33,14 +33,10 @@ window.WEDDING = {
     mapQuery: "Taha Palace Wedding Venue, Hiriyur, Karnataka"
   },
 
-  // Day schedule. Set to [] to hide the section.
-  schedule: [
-    { day: "28 NOV", time: "19:00", label: "Reception, dinner and blessings" },
-    { day: "29 NOV", time: "09:10", label: "Muhurtham begins" },
-    { day: "29 NOV", time: "10:22", label: "Muhurtham concludes" }
-  ],
-
-  closing: "Your presence would be the greatest gift we could receive!",
+  // Closing section (bottom of the page)
+  thanksQuote: "May your life together be full of love and your love be full of life.",
+  thanks: "Thank you for being part of our journey",
+  presence: "Your presence is the greatest gift of all.",
 
   // Post-wedding: link to the full-resolution album (Google Photos / Drive / R2 …),
   // then set postWedding to true to show the "Photo Album" section.
