@@ -37,9 +37,9 @@ The `photos/` folder currently holds **SAMPLE images** (made by `node tools/make
 ## After the wedding
 Set `postWedding: true` and `albumUrl` in `site/config.js` to link a full-resolution album (Google Photos / Drive / R2).
 
-## Deploy (publish directory = `site`, no build command)
-- **Cloudflare Pages:** connect the repo, build command empty, output directory `site`.
-- **GitHub Pages:** deploy from a branch or a workflow that uploads `site/`.
-
-## Artwork
-All flower and lotus illustrations in `site/img/` are original SVGs made for this project. `tools/gen_flowers.py` regenerates the garden background, side edges and flower gate (`python3 tools/gen_flowers.py`).
+## Deploy (GitHub Pages + custom domain)
+A workflow (`.github/workflows/pages.yml`) publishes the `site/` folder on every push to `main`.
+- Live address: https://vasanth-weds-ranjitha.q21.in
+- DNS: add a **CNAME** record `vasanth-weds-ranjitha` -> `prashanthgowdagr.github.io` at the `q21.in` DNS provider (DNS only if using Cloudflare).
+- In Settings -> Pages, once the DNS check passes, tick **Enforce HTTPS**.
+- The project also works on Cloudflare Pages (build command empty, output directory `site`).
