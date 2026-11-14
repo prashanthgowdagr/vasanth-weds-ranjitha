@@ -44,7 +44,7 @@ p,h1,h2,h3{margin:0}
 .divider i{flex:0 0 70px;height:1px;background:var(--leaf-l)}.divider b{font-size:.8rem}
 .infinity{display:block;width:210px;max-width:80%;margin:.5rem auto 1.4rem;overflow:visible}
 .inf-l{font:700 30px Lora,Georgia,serif;fill:#3e5f26}
-.loop{stroke-dasharray:640;stroke-dashoffset:640;animation:draw 2.4s ease-out .3s forwards}
+.loop{stroke-dasharray:520;stroke-dashoffset:520;animation:draw 2.4s ease-out .3s forwards}
 @keyframes draw{to{stroke-dashoffset:0}}
 .i-guest{font-size:1.05rem;margin-bottom:.9rem}
 
@@ -203,3 +203,18 @@ p,h1,h2,h3{margin:0}
 @keyframes swipe{0%{transform:translateY(34px);opacity:0}20%{opacity:1}70%{transform:translateY(-22px);opacity:1}100%{transform:translateY(-34px);opacity:0}}
 .hint span{font:700 .7rem var(--serif);letter-spacing:.35em;text-transform:uppercase;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.55)}
 @media (prefers-reduced-motion:reduce){.loop{stroke-dashoffset:0}}
+
+/* ===== The Celebration cards (stacked, mobile first) ===== */
+#celebration .cart{font-size:1.05rem;padding:.4rem 1rem;min-width:min(68%,230px);margin-bottom:.6rem;border-width:13px;border-image-width:13px}
+.joy{font-size:1.9rem;color:var(--leaf);margin-bottom:1.4rem}
+.event{position:relative;text-align:left;margin:0 0 1.1rem;padding:1.5rem 1.3rem 1.3rem;border-radius:40px 12px 40px 12px;border:1px solid rgba(255,255,255,.75);
+  background:linear-gradient(160deg,rgba(255,255,255,.7),rgba(240,248,232,.4));box-shadow:0 12px 30px rgba(30,60,30,.18),inset 0 1px 0 #fff}
+.ev-ring{display:grid;place-items:center;width:50px;height:50px;border-radius:50%;border:1.5px solid #d9a08c;color:#c97c63;margin-bottom:1rem;background:rgba(255,255,255,.5)}
+.event h3{font:400 1.8rem/1.2 var(--serif);color:var(--leaf-d);margin-bottom:.4rem}
+.when{font:700 .72rem var(--serif);letter-spacing:.2em;text-transform:uppercase;color:#8c6b5d;margin-bottom:.8rem;line-height:1.7}
+.event>p.d{color:#4b5d43;font-size:.98rem;margin-bottom:1rem}
+.loc{display:flex;gap:.7rem;align-items:flex-start;border:1px solid rgba(255,255,255,.8);border-radius:14px;padding:.75rem 1rem;background:rgba(255,255,255,.45)}
+.loc svg{color:#c97c63;flex:none;margin-top:3px}
+.loc small{display:block;font:400 .6rem var(--serif);letter-spacing:.3em;text-transform:uppercase;color:#b88b7b}
+.loc span{color:var(--leaf-d);font-size:1rem}
+.foot-lotus{margin-top:2rem}

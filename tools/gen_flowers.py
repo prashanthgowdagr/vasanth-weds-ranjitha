@@ -13,6 +13,9 @@ DEFS = '''<defs>
 <linearGradient id="l1" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#2f6a45"/><stop offset="1" stop-color="#6aa15a"/></linearGradient>
 <linearGradient id="l2" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#4c8a58"/><stop offset="1" stop-color="#a6cf88"/></linearGradient>
 <linearGradient id="l3" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#3b7f6a"/><stop offset="1" stop-color="#8dc0a0"/></linearGradient>
+<linearGradient id="s1" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#7c9d68"/><stop offset="1" stop-color="#b8d09c"/></linearGradient>
+<linearGradient id="s2" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#93b27c"/><stop offset="1" stop-color="#cfdfb3"/></linearGradient>
+<linearGradient id="mg" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#efe4c4"/><stop offset=".45" stop-color="#fffaf0"/><stop offset="1" stop-color="#ffffff"/></linearGradient>
 </defs>'''
 
 def leaf(x, y, L, rot, g="l1", op=1):
@@ -103,4 +106,48 @@ d += '<g opacity=".25">' + ''.join(f'<rect x="{x}" y="0" width="3" height="{Hd}"
 d += f'<g filter="url(#paint)">{cluster(r, Wd * 1.7, Hd, 2.6, left_bias=False, white_ratio=.5)}</g>'
 d += f'<rect x="{Wd-6}" y="0" width="6" height="{Hd}" fill="#fff" opacity=".55"/>'
 write("decor/door.svg", Wd, Hd, d)
+
+# 4) white-flower footer strip (spirea/jasmine clusters, buds, magnolias, sage leaves)
+def magnolia(x, y, sc, rnd, rot=0):
+    g = f'<g transform="translate({x:.1f} {y:.1f}) rotate({rot}) scale({sc})">'
+    for k, (a, sx) in enumerate([(-75, .8), (75, .8), (-48, .92), (48, .92), (-22, 1), (22, 1), (0, 1.05)]):
+        g += f'<ellipse cx="0" cy="-30" rx="20" ry="36" transform="rotate({a}) scale({sx})" fill="url(#mg)" stroke="#e5dcc0" stroke-width=".9"/>'
+    g += '<circle cy="-10" r="9" fill="#f1dc8a"/>' + ''.join(f'<path d="M0 -10L{math.cos(t)*16:.1f} {-10+math.sin(t)*16:.1f}" stroke="#e3b43e" stroke-width="1.4"/><circle cx="{math.cos(t)*17:.1f}" cy="{-10+math.sin(t)*17:.1f}" r="1.9" fill="#e9bd42"/>' for t in [i*math.pi/6 for i in range(12)]) + '</g>'
+    return g
+
+def bud(x, y, r, rnd):
+    return (f'<g transform="translate({x:.1f} {y:.1f}) rotate({rnd.uniform(-20,20):.0f})"><ellipse rx="{r}" ry="{r*1.1:.1f}" fill="#fbfae9" stroke="#d6dcb8" stroke-width=".9"/>'
+            f'<path d="M{-r*.6:.1f} {r*.9:.1f}Q0 {r*1.5:.1f} {r*.6:.1f} {r*.9:.1f}" fill="#a9c58a"/></g>')
+
+def bud_sprig(x, y, ang, L, rnd):
+    ex, ey = x + math.cos(math.radians(ang)) * L, y + math.sin(math.radians(ang)) * L
+    cx, cy = (x + ex) / 2 + rnd.uniform(-22, 22), (y + ey) / 2 + rnd.uniform(-10, 10)
+    out = f'<path d="M{x:.1f} {y:.1f}Q{cx:.1f} {cy:.1f} {ex:.1f} {ey:.1f}" stroke="#86a56f" stroke-width="2.2" fill="none"/>'
+    for t in (.35, .55, .75):
+        px = (1-t)**2*x + 2*(1-t)*t*cx + t*t*ex; py = (1-t)**2*y + 2*(1-t)*t*cy + t*t*ey
+        out += f'<path d="M{px:.1f} {py:.1f}L{px+rnd.uniform(-26,26):.1f} {py-rnd.uniform(6,22):.1f}" stroke="#86a56f" stroke-width="1.6"/>' + bud(px + rnd.uniform(-26,26), py - rnd.uniform(8,24), rnd.uniform(5.5, 8), rnd)
+    out += bud(ex, ey, 8, rnd) + bud(ex + 12, ey + 8, 6, rnd)
+    return out
+
+def dome(cx, cy, rx, ry, n, rnd):
+    out = ''
+    for _ in range(n):
+        a = rnd.uniform(math.pi, 2 * math.pi); rr = math.sqrt(rnd.random())
+        out += jasmine(cx + math.cos(a) * rx * rr, cy + math.sin(a) * ry * rr + ry * .3, rnd.uniform(8, 13), rnd)
+    return out
+
+r = random.Random(41); Wf, Hf = 800, 290
+f = '<g filter="url(#paint)">'
+for x, y, L, rot, g in [(40,250,120,-70,"s1"),(180,262,140,-110,"s2"),(300,266,110,-60,"s1"),(430,268,150,-115,"s2"),(560,262,130,-65,"s1"),(700,250,130,-105,"s2"),(780,262,100,-75,"s1"),(110,270,110,-130,"s1")]:
+    f += leaf(x, y, L, rot, g, .97)
+for x, y, a, L in [(25,260,-80,200),(150,255,-70,185),(255,262,-100,170),(520,262,-75,190),(610,258,-105,200),(715,262,-80,185),(790,255,-100,150)]:
+    f += bud_sprig(x, y, a, L, r)
+for cx, cy, rx, ry, n in [(80,262,100,95,75),(330,268,120,100,85),(560,268,115,90,80),(745,262,90,85,60)]:
+    f += dome(cx, cy, rx, ry, n, r)
+f += magnolia(650, 222, .95, r, 12) + magnolia(205, 205, .5, r, -10)
+f += f'<g transform="translate(215 118) rotate(10)"><ellipse rx="23" ry="32" fill="#e9eecb" stroke="#cdd7a9"/><path d="M-14 -4Q0 18 14 -4" fill="none" stroke="#b9c78f"/></g>'
+for x, y, L, rot, g in [(10,285,90,-20,"s2"),(260,288,100,-160,"s1"),(480,288,90,-30,"s2"),(790,288,100,-165,"s1")]:
+    f += leaf(x, y, L, rot, g, .98)
+f += '</g>'
+write("decor/footer-white.svg", Wf, Hf, f)
 print("ok")

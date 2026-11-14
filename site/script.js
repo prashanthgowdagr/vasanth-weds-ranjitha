@@ -75,9 +75,19 @@
   if (params.has("skipintro")) openInvite(false);   // for previews/testing
   $("open-btn").addEventListener("click", () => openInvite(true));
 
-  // ---------- Ceremonies ----------
+  // ---------- The Celebration cards (info only, no extra buttons) ----------
+  const ICON = { sparkle: '<g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 4l1.6 4.4L16 10l-4.4 1.6L10 16l-1.6-4.4L4 10l4.4-1.6z"/><path d="M18 14l.8 2.2L21 17l-2.2.8L18 20l-.8-2.2L15 17l2.2-.8z"/></g>',
+    heart: '<path d="M12 20.5s-8-4.8-8-10.6A4.4 4.4 0 0 1 12 7.6a4.4 4.4 0 0 1 8 2.3c0 5.8-8 10.6-8 10.6z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>' };
+  const MON_UP = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+  const t12 = ({ hh, mm }) => `${((hh + 11) % 12) + 1}:${String(mm).padStart(2, "0")} ${hh < 12 ? "AM" : "PM"}`;
   W.events.forEach((e) => {
-    const box = el("div", "cer reveal"); box.append(el("h3", null, e.title), el("h3", null, e.venue), dateBlock(e)); $("ceremonies").append(box);
+    const p = parse(e.start), c = el("article", "event reveal");
+    const when = `${p.d} ${MON_UP[p.m - 1]} ${p.y} • ${t12(p)}${e.showEnd && e.end ? ` to ${t12(parse(e.end))}` : ""}`;
+    const ring = el("span", "ev-ring"); ring.innerHTML = `<svg width="24" height="24" viewBox="0 0 24 24">${ICON[e.icon] || ICON.heart}</svg>`;
+    const loc = el("div", "loc"); loc.innerHTML = '<svg width="18" height="18"><use href="#pin"/></svg>';
+    const t = el("div"); t.append(el("small", null, "Location"), el("span", null, e.venue)); loc.append(t);
+    c.append(ring, el("h3", null, e.title), el("p", "when", when), el("p", "d", e.desc || ""), loc);
+    $("event-list").append(c);
   });
 
   // ---------- Reception info ----------
@@ -205,6 +215,7 @@
   lotus($("home"), [["corner", R("-28px", 150)], ["corner", L("66%", 110, 8)]]);
   lotus($("ceremony"), [["corner", R("6%", 110, 6)], ["corner", L("62%", 120, -6)]]);
   divider($("ceremony"), document.querySelector("#ceremony .cart"));
+  lotus($("celebration"), [["corner", R("4%", 110, 6)], ["corner", L("62%", 120, -6)]]);
   lotus($("gallery"), [["corner", L("-2%", 120, 6)]]);
   lotus($("reception"), [["corner", R("12%", 120, 8)], ["corner", L("68%", 120, -6)]]);
   lotus($("venue"), [["corner", R("6%", 110, 8)]]);
