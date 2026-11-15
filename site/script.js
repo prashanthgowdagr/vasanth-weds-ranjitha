@@ -84,9 +84,7 @@
     const p = parse(e.start), c = el("article", "event reveal");
     const when = `${p.d} ${MON_UP[p.m - 1]} ${p.y} • ${t12(p)}${e.showEnd && e.end ? ` to ${t12(parse(e.end))}` : ""}`;
     const ring = el("span", "ev-ring"); ring.innerHTML = `<svg width="24" height="24" viewBox="0 0 24 24">${ICON[e.icon] || ICON.heart}</svg>`;
-    const loc = el("div", "loc"); loc.innerHTML = '<svg width="18" height="18"><use href="#pin"/></svg>';
-    const t = el("div"); t.append(el("small", null, "Location"), el("span", null, e.venue)); loc.append(t);
-    c.append(ring, el("h3", null, e.title), el("p", "when", when), el("p", "d", e.desc || ""), loc);
+    c.append(ring, el("h3", null, e.title), el("p", "when", when), el("p", "d", e.desc || ""));
     $("event-list").append(c);
   });
 
@@ -118,8 +116,9 @@
     let ticking = false;
     const update = () => {
       ticking = false;
-      const r = track.getBoundingClientRect(), total = track.offsetHeight - innerHeight;
-      const p = Math.min(1, Math.max(0, -r.top / total) / 0.55);
+      const r = track.getBoundingClientRect(), sh = stage.offsetHeight, pin = Math.max(0, (innerHeight - sh) / 2);
+      const total = track.offsetHeight - sh;
+      const p = Math.min(1, Math.max(0, (pin - r.top) / total) / 0.8);
       stage.style.setProperty("--p", p.toFixed(3));
       if (p > 0.92 && !fired) { fired = true; burst(); }
       if (p < 0.3) fired = false;

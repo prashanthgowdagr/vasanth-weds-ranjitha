@@ -52,13 +52,13 @@ if (!files.length) {
   await rm(path.join(OUT, "gallery"), { recursive: true, force: true });   // drop stale outputs from earlier runs
   await mkdir(path.join(OUT, "gallery"), { recursive: true });
   const items = [];
-  // Screenshots often carry a 1-2px dark line along an edge: trim 3px off every side of those files only.
+  // Screenshots (PNG) often carry a 1-2px dark line along an edge: trim 3px off every side of PNG sources.
+  // (Detected by file content, so a PNG saved with a .jpg name is handled too.)
   const load = async (file) => {
-    let img = sharp(file).rotate();
-    if (/^screenshot/i.test(path.basename(file))) {
-      const { width, height } = await sharp(file).metadata();
-      img = sharp(await sharp(file).rotate().extract({ left: 3, top: 3, width: width - 6, height: height - 6 }).toBuffer());
-    }
+    const meta = await sharp(file).metadata();
+    const img = sharp(file).rotate();
+    if (meta.format === "png" && meta.width > 40 && meta.height > 40)
+      return sharp(await img.extract({ left: 3, top: 3, width: meta.width - 6, height: meta.height - 6 }).toBuffer());
     return img;
   };
   for (const f of files) {

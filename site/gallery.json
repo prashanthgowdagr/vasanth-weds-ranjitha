@@ -2,29 +2,29 @@
   {
     "thumb": "img/gallery/1-thumb.webp",
     "full": "img/gallery/1.webp",
-    "w": 600,
-    "h": 908,
+    "w": 490,
+    "h": 744,
     "alt": "Wedding photo 1"
   },
   {
     "thumb": "img/gallery/2-thumb.webp",
     "full": "img/gallery/2.webp",
     "w": 600,
-    "h": 905,
+    "h": 908,
     "alt": "Wedding photo 2"
   },
   {
     "thumb": "img/gallery/3-thumb.webp",
     "full": "img/gallery/3.webp",
-    "w": 600,
-    "h": 890,
+    "w": 476,
+    "h": 733,
     "alt": "Wedding photo 3"
   },
   {
     "thumb": "img/gallery/4-thumb.webp",
     "full": "img/gallery/4.webp",
     "w": 600,
-    "h": 858,
+    "h": 893,
     "alt": "Wedding photo 4"
   },
   {
@@ -52,7 +52,28 @@
     "thumb": "img/gallery/8-thumb.webp",
     "full": "img/gallery/8.webp",
     "w": 600,
-    "h": 893,
+    "h": 890,
     "alt": "Wedding photo 8"
+  },
+  {
+    "thumb": "img/gallery/9-thumb.webp",
+    "full": "img/gallery/9.webp",
+    "w": 522,
+    "h": 748,
+    "alt": "Wedding photo 9"
+  },
+  {
+    "thumb": "img/gallery/10-thumb.webp",
+    "full": "img/gallery/10.webp",
+    "w": 485,
+    "h": 738,
+    "alt": "Wedding photo 10"
+  },
+  {
+    "thumb": "img/gallery/11-thumb.webp",
+    "full": "img/gallery/11.webp",
+    "w": 489,
+    "h": 743,
+    "alt": "Wedding photo 11"
   }
 ]
