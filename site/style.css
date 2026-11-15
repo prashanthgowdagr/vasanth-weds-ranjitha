@@ -42,10 +42,12 @@ p,h1,h2,h3{margin:0}
 .i-amp{font-size:1.4rem;line-height:1.1;color:var(--leaf-l)}
 .divider{display:flex;align-items:center;gap:.5rem;justify-content:center;margin:.9rem 0 .8rem;color:var(--leaf)}
 .divider i{flex:0 0 70px;height:1px;background:var(--leaf-l)}.divider b{font-size:.8rem}
-.infinity{display:block;width:210px;max-width:80%;margin:.5rem auto 1.4rem;overflow:visible}
-.inf-l{font:700 30px Lora,Georgia,serif;fill:#3e5f26}
-.loop{stroke-dasharray:520;stroke-dashoffset:520;animation:draw 2.4s ease-out .3s forwards}
-@keyframes draw{to{stroke-dashoffset:0}}
+.infinity{display:block;width:calc(100% + 44px);max-width:none;margin:.2rem -22px .6rem;overflow:visible}
+.inf-l{font:700 31px Lora,Georgia,serif;fill:#3e5f26}
+.inf-draw{animation:inf-reveal 2.6s cubic-bezier(.5,0,.2,1) .3s both}
+@keyframes inf-reveal{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+.inf-l{animation:inf-fade 1s ease 1.6s both}
+@keyframes inf-fade{from{opacity:0}to{opacity:1}}
 .i-guest{font-size:1.05rem;margin-bottom:.9rem}
 
 /* ===== Page column ===== */
@@ -202,7 +204,7 @@ p,h1,h2,h3{margin:0}
 .swipe-hand{width:50px;height:auto;filter:drop-shadow(0 6px 8px rgba(0,0,0,.35));animation:swipe 2s ease-in-out infinite}
 @keyframes swipe{0%{transform:translateY(34px);opacity:0}20%{opacity:1}70%{transform:translateY(-22px);opacity:1}100%{transform:translateY(-34px);opacity:0}}
 .hint span{font:700 .7rem var(--serif);letter-spacing:.35em;text-transform:uppercase;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.55)}
-@media (prefers-reduced-motion:reduce){.loop{stroke-dashoffset:0}}
+
 
 /* ===== The Celebration cards (stacked, mobile first) ===== */
 #celebration .cart{font-size:1.05rem;padding:.4rem 1rem;min-width:min(68%,230px);margin-bottom:.6rem;border-width:13px;border-image-width:13px}
