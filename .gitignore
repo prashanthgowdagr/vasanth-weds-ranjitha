@@ -5,3 +5,6 @@ node_modules/
 
 # Windows download-tag files that come with copied photos
 *:*
+
+# Unneeded PNG originals (kept locally only)
+photos/_originals/
