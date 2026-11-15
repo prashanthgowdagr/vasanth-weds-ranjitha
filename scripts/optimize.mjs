@@ -1,7 +1,6 @@
 // Turns the originals in /photos into web-ready files in /site/img and writes site/gallery.json.
 //
 //   photos/hero.jpg      -> site/img/hero.webp   (1000x1594 portrait crop for the notched frame on the opening page)
-//   photos/og.jpg        -> site/img/og.jpg      (1200x630 link preview; made from hero if missing)
 //   photos/gallery/*     -> site/img/gallery/<name>.webp (1800px) + <name>-thumb.webp (600px), listed in gallery.json
 //
 // Originals are never modified. Run:  npm run photos
@@ -40,8 +39,7 @@ await mkdir(path.join(OUT, "gallery"), { recursive: true });
 console.log("Single photos:");
 const crop = (w, h) => (s) => s.resize(w, h, { fit: "cover", position: "attention", withoutEnlargement: true });   // never upscale small photos
 await single("hero", "hero.webp", (s) => s.flatten({ background: "#ffffff" }).resize({ width: 1000, height: 1594, fit: "cover", position: "attention", withoutEnlargement: true }).webp({ quality: 88 }));
-// link preview: the whole photo on a soft green canvas (a tall photo cropped to a wide shape would be blurry)
-await single("og", "og.jpg", (s) => s.flatten({ background: "#ffffff" }).resize(1200, 630, { fit: "contain", background: { r: 204, g: 220, b: 184 } }).jpeg({ quality: 86 }), "hero");
+// og.jpg (link preview) is designed separately: node tools/make_og.mjs . It is not touched here.
 
 console.log("Gallery:");
 const gdir = path.join(SRC, "gallery");

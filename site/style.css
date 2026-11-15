@@ -120,7 +120,7 @@ p,h1,h2,h3{margin:0}
 .divider-img{display:block;width:min(70%,260px);margin:0 auto 1.2rem;pointer-events:none}
 
 /* music button (default playing) */
-.music{position:fixed;right:max(8px,calc(50% - 262px));top:50%;z-index:60;width:46px;height:46px;border-radius:50%;border:0;background:radial-gradient(circle at 35% 30%,#6f9444,#3d5f22);cursor:pointer;display:grid;place-items:center;box-shadow:0 4px 12px rgba(0,0,0,.3)}
+.music{position:fixed;right:14px;bottom:calc(14px + env(safe-area-inset-bottom));z-index:60;width:46px;height:46px;border-radius:50%;border:0;background:radial-gradient(circle at 35% 30%,#6f9444,#3d5f22);cursor:pointer;display:grid;place-items:center;box-shadow:0 4px 12px rgba(0,0,0,.3)}
 .music.off{opacity:.55}.music.off .bar{animation:none}
 .music .bar{transform-origin:bottom;transform-box:fill-box;animation:eq 1s ease-in-out infinite}
 .music .bar:nth-child(2){animation-delay:.2s}.music .bar:nth-child(3){animation-delay:.4s}
