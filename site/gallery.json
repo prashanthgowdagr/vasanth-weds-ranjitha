@@ -1,58 +1,58 @@
 [
   {
-    "thumb": "img/gallery/01-thumb.webp",
-    "full": "img/gallery/01.webp",
+    "thumb": "img/gallery/1-thumb.webp",
+    "full": "img/gallery/1.webp",
     "w": 600,
-    "h": 750,
-    "alt": "01"
+    "h": 908,
+    "alt": "Wedding photo 1"
   },
   {
-    "thumb": "img/gallery/02-thumb.webp",
-    "full": "img/gallery/02.webp",
+    "thumb": "img/gallery/2-thumb.webp",
+    "full": "img/gallery/2.webp",
     "w": 600,
-    "h": 400,
-    "alt": "02"
+    "h": 905,
+    "alt": "Wedding photo 2"
   },
   {
-    "thumb": "img/gallery/03-thumb.webp",
-    "full": "img/gallery/03.webp",
+    "thumb": "img/gallery/3-thumb.webp",
+    "full": "img/gallery/3.webp",
     "w": 600,
-    "h": 750,
-    "alt": "03"
+    "h": 890,
+    "alt": "Wedding photo 3"
   },
   {
-    "thumb": "img/gallery/04-thumb.webp",
-    "full": "img/gallery/04.webp",
+    "thumb": "img/gallery/4-thumb.webp",
+    "full": "img/gallery/4.webp",
     "w": 600,
-    "h": 600,
-    "alt": "04"
+    "h": 858,
+    "alt": "Wedding photo 4"
   },
   {
-    "thumb": "img/gallery/05-thumb.webp",
-    "full": "img/gallery/05.webp",
+    "thumb": "img/gallery/5-thumb.webp",
+    "full": "img/gallery/5.webp",
     "w": 600,
-    "h": 750,
-    "alt": "05"
+    "h": 914,
+    "alt": "Wedding photo 5"
   },
   {
-    "thumb": "img/gallery/06-thumb.webp",
-    "full": "img/gallery/06.webp",
-    "w": 600,
-    "h": 400,
-    "alt": "06"
+    "thumb": "img/gallery/6-thumb.webp",
+    "full": "img/gallery/6.webp",
+    "w": 573,
+    "h": 897,
+    "alt": "Wedding photo 6"
   },
   {
-    "thumb": "img/gallery/07-thumb.webp",
-    "full": "img/gallery/07.webp",
+    "thumb": "img/gallery/7-thumb.webp",
+    "full": "img/gallery/7.webp",
     "w": 600,
-    "h": 750,
-    "alt": "07"
+    "h": 905,
+    "alt": "Wedding photo 7"
   },
   {
-    "thumb": "img/gallery/08-thumb.webp",
-    "full": "img/gallery/08.webp",
+    "thumb": "img/gallery/8-thumb.webp",
+    "full": "img/gallery/8.webp",
     "w": 600,
-    "h": 600,
-    "alt": "08"
+    "h": 893,
+    "alt": "Wedding photo 8"
   }
 ]

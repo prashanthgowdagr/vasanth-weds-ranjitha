@@ -29,7 +29,7 @@ Drop originals into `photos/` and run `npm run photos`:
 |---|---|
 | `photos/hero.jpg` | Opening page photo (tall portrait works best) |
 | `photos/og.jpg` | WhatsApp / link preview (optional; made from hero if missing) |
-| `photos/gallery/*.jpg` | Photo Gallery carousel (any names, sorted alphabetically) |
+| `photos/gallery/*.jpg` | Photo Gallery carousel. Named `1.jpg`, `2.jpg`, ... and shown in that order (rename files to reorder) |
 
 Originals are never modified; optimised WebP copies are written to `site/img` (old gallery outputs are cleaned each run).
 The `photos/` folder currently holds **SAMPLE images** (made by `node tools/make_samples.mjs`). Replace them with the real photos and run `npm run photos`.

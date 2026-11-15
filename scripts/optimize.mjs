@@ -18,11 +18,19 @@ const base = (f) => path.parse(f).name;
 const exists = async (p) => !!(await stat(p).catch(() => null));
 
 async function find(name) {
-  const f = (await readdir(SRC).catch(() => [])).find((x) => base(x) === name && EXT.test(x));
-  return f && path.join(SRC, f);
+  // several files can share a name (hero.jpg / hero.JPG): the most recently modified one wins
+  const names = (await readdir(SRC).catch(() => [])).filter((x) => base(x) === name && EXT.test(x));
+  const withTime = await Promise.all(names.map(async (x) => ({ f: path.join(SRC, x), t: (await stat(path.join(SRC, x))).mtimeMs })));
+  withTime.sort((x, y) => y.t - x.t);
+  return withTime[0] && withTime[0].f;
 }
 async function single(name, out, fn, fallback) {
-  const file = (await find(name)) || (fallback && (await find(fallback)));
+  let file = await find(name);
+  if (file && fallback) {
+    const fb = await find(fallback);
+    if (fb && (await stat(fb)).mtimeMs > (await stat(file)).mtimeMs) { console.log(`  - ${path.basename(file)} is older than ${path.basename(fb)}, using ${path.basename(fb)} instead`); file = fb; }
+  }
+  if (!file && fallback) file = await find(fallback);
   if (!file) return console.log(`  - ${name}: not found (sample placeholder stays)`);
   await fn(sharp(file).rotate()).toFile(path.join(OUT, out));
   console.log(`  ✓ ${path.basename(file)} -> img/${out}`);
@@ -30,24 +38,34 @@ async function single(name, out, fn, fallback) {
 
 await mkdir(path.join(OUT, "gallery"), { recursive: true });
 console.log("Single photos:");
-const crop = (w, h) => (s) => s.resize(w, h, { fit: "cover", position: "attention" });
-await single("hero", "hero.webp", (s) => crop(1000, 1594)(s).webp({ quality: 82 }));
-await single("og", "og.jpg", (s) => crop(1200, 630)(s).jpeg({ quality: 82 }), "hero");
+const crop = (w, h) => (s) => s.resize(w, h, { fit: "cover", position: "attention", withoutEnlargement: true });   // never upscale small photos
+await single("hero", "hero.webp", (s) => s.flatten({ background: "#ffffff" }).resize({ width: 1000, height: 1594, fit: "cover", position: "attention", withoutEnlargement: true }).webp({ quality: 88 }));
+// link preview: the whole photo on a soft green canvas (a tall photo cropped to a wide shape would be blurry)
+await single("og", "og.jpg", (s) => s.flatten({ background: "#ffffff" }).resize(1200, 630, { fit: "contain", background: { r: 204, g: 220, b: 184 } }).jpeg({ quality: 86 }), "hero");
 
 console.log("Gallery:");
 const gdir = path.join(SRC, "gallery");
-const files = ((await exists(gdir)) ? await readdir(gdir) : []).filter((f) => EXT.test(f)).sort();
+const files = ((await exists(gdir)) ? await readdir(gdir) : []).filter((f) => EXT.test(f)).sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
 if (!files.length) {
   console.log("  - no photos in photos/gallery, keeping existing gallery.json (sample cards)");
 } else {
   await rm(path.join(OUT, "gallery"), { recursive: true, force: true });   // drop stale outputs from earlier runs
   await mkdir(path.join(OUT, "gallery"), { recursive: true });
   const items = [];
+  // Screenshots often carry a 1-2px dark line along an edge: trim 3px off every side of those files only.
+  const load = async (file) => {
+    let img = sharp(file).rotate();
+    if (/^screenshot/i.test(path.basename(file))) {
+      const { width, height } = await sharp(file).metadata();
+      img = sharp(await sharp(file).rotate().extract({ left: 3, top: 3, width: width - 6, height: height - 6 }).toBuffer());
+    }
+    return img;
+  };
   for (const f of files) {
     const n = base(f).replace(/[^a-zA-Z0-9_-]+/g, "-"), input = path.join(gdir, f);
-    const full = await sharp(input).rotate().resize({ width: 1800, withoutEnlargement: true }).webp({ quality: 82 }).toFile(path.join(OUT, "gallery", `${n}.webp`));
-    const thumb = await sharp(input).rotate().resize({ width: 600, withoutEnlargement: true }).webp({ quality: 75 }).toFile(path.join(OUT, "gallery", `${n}-thumb.webp`));
-    items.push({ thumb: `img/gallery/${n}-thumb.webp`, full: `img/gallery/${n}.webp`, w: thumb.width, h: thumb.height, alt: n.replace(/[-_]+/g, " ") });
+    const full = await (await load(input)).flatten({ background: "#ffffff" }).resize({ width: 1800, withoutEnlargement: true }).webp({ quality: 88 }).toFile(path.join(OUT, "gallery", `${n}.webp`));
+    const thumb = await (await load(input)).flatten({ background: "#ffffff" }).resize({ width: 600, withoutEnlargement: true }).webp({ quality: 82 }).toFile(path.join(OUT, "gallery", `${n}-thumb.webp`));
+    items.push({ thumb: `img/gallery/${n}-thumb.webp`, full: `img/gallery/${n}.webp`, w: thumb.width, h: thumb.height, alt: `Wedding photo ${items.length + 1}` });
     console.log(`  ✓ ${f} (${Math.round(full.size / 1024)} KB)`);
   }
   await writeFile(path.join(ROOT, "site", "gallery.json"), JSON.stringify(items, null, 2) + "\n");

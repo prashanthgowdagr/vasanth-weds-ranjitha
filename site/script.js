@@ -19,7 +19,7 @@
     r.append(el("span", "day", String(p.d).padStart(2, "0")), el("span", "rule"), my);
     w.append(a, r); return w;
   };
-  const main = W.events[W.mainEvent], rec = W.events[W.receptionEvent], mp = parse(main.start);
+  const main = W.events[W.mainEvent], mp = parse(main.start);
   // ---------- Text ----------
   document.title = `${W.groom} & ${W.bride} — Wedding Invitation`;
   text("i-groom", W.groom); text("i-bride", W.bride);
@@ -88,17 +88,6 @@
     const t = el("div"); t.append(el("small", null, "Location"), el("span", null, e.venue)); loc.append(t);
     c.append(ring, el("h3", null, e.title), el("p", "when", when), el("p", "d", e.desc || ""), loc);
     $("event-list").append(c);
-  });
-
-  // ---------- Reception info ----------
-  $("reception-date").append(dateBlock(rec));
-  // Split row: Reception | Muhurtham (one column per event)
-  const MON3 = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-  W.events.forEach((e, i) => {
-    if (i) $("times").append(el("span", "vsep"));
-    const p = parse(e.start), d = el("div");
-    d.append(el("small", null, e.title.toUpperCase()), el("b", null, p.t), el("em", null, `${p.d} ${MON3[p.m - 1]}${e.showEnd && e.end ? ` · till ${parse(e.end).t}` : ""}`));
-    $("times").append(d);
   });
 
   // ---------- Save the Date card + highlighted countdown ----------
@@ -170,6 +159,7 @@
   // ---------- Venue: map + the single "Get directions" ----------
   const q = encodeURIComponent(W.venue.mapQuery);
   text("venue-title", W.venue.title); text("venue-name", W.venue.name); text("venue-addr", W.venue.address);
+  [["chip-area", W.venue.area], ["chip-note", W.venue.note]].forEach(([id, v]) => { $(id).hidden = !v; if (v) $(id).querySelector("span").textContent = v; });
   $("map").src = `https://maps.google.com/maps?q=${q}&output=embed`;
   $("dir-btn").href = `https://www.google.com/maps/dir/?api=1&destination=${q}`;
 
