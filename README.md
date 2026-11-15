@@ -18,7 +18,7 @@ Everything (names, parents, events, venue, texts) is in **`site/config.js`**.
 Parents: set `groomParents` / `brideParents` to `{ title, lines }` or `null` to hide.
 
 ## Music
-Put your song at **`site/audio/music.mp3`**. It starts when the guest taps **Open** (browsers only allow sound after a tap) and loops.
+Put your song in **`site/audio/`** and set its path in `site/config.js` (`music: "audio/Parichayavade.mp3"`). It starts when the guest taps **Open** (browsers only allow sound after a tap) and loops.
 A round button on the right lets guests pause or play it. Until the file exists, the button stays hidden.
 Tip: keep it under ~3 MB (128 kbps) so the page stays fast.
 

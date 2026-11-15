@@ -56,20 +56,27 @@
     p.innerHTML = petalSvg; pc.append(p);
   }
 
-  // ---------- Music: starts on OPEN (user gesture), button toggles ----------
-  const music = new Audio("audio/music.mp3"), mbtn = $("music-btn");
+  // ---------- Music: starts on OPEN (a tap is required by browsers) and repeats forever ----------
+  const music = new Audio(W.music || "audio/music.mp3"), mbtn = $("music-btn");
   music.loop = true; music.volume = 0.6; music.preload = "auto";
-  let hasAudio = false;
+  music.addEventListener("ended", () => { music.currentTime = 0; music.play().catch(() => {}); });   // safety net: restart if a browser ignores loop
+  let hasAudio = false, wanted = false;
   music.addEventListener("canplay", () => { hasAudio = true; if (document.body.classList.contains("started")) mbtn.hidden = false; });
-  const syncBtn = () => mbtn.classList.toggle("off", music.paused);
+  const syncBtn = () => { mbtn.classList.toggle("off", music.paused); mbtn.dataset.state = music.paused ? "paused" : "playing"; };
   music.addEventListener("play", syncBtn); music.addEventListener("pause", syncBtn);
-  mbtn.addEventListener("click", () => (music.paused ? music.play().catch(() => {}) : music.pause()));
-  document.addEventListener("visibilitychange", () => { if (document.hidden && !music.paused) { music.pause(); music.dataset.resume = "1"; } else if (!document.hidden && music.dataset.resume) { delete music.dataset.resume; music.play().catch(() => {}); } });
+  mbtn.addEventListener("click", () => { wanted = music.paused; music.paused ? music.play().catch(() => {}) : music.pause(); });
+  // If a browser refuses to start the song on the Open tap, start it on the very next touch / key / scroll.
+  const retry = () => { if (wanted && music.paused) music.play().then(() => ["pointerdown", "touchstart", "keydown", "scroll"].forEach((t) => removeEventListener(t, retry))).catch(() => {}); };
+  ["pointerdown", "touchstart", "keydown", "scroll"].forEach((t) => addEventListener(t, retry, { passive: true }));
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden && !music.paused) { music.pause(); music.dataset.resume = "1"; }
+    else if (!document.hidden && music.dataset.resume) { delete music.dataset.resume; music.play().catch(() => {}); }
+  });
 
   const openInvite = (withMusic) => {
     $("intro").classList.add("open"); document.body.classList.remove("locked"); document.body.classList.add("started");
     scrollTo(0, 0);
-    if (withMusic) music.play().catch(() => {});   // allowed: this runs inside the Open click
+    if (withMusic) { wanted = true; music.play().catch(() => {}); }   // allowed: this runs inside the Open click
     if (hasAudio) mbtn.hidden = false;
   };
   if (params.has("skipintro")) openInvite(false);   // for previews/testing

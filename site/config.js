@@ -33,6 +33,9 @@ window.WEDDING = {
     mapQuery: "Taha Palace Wedding Venue, Hiriyur, Karnataka"
   },
 
+  // Background song (put the file in site/audio/). Starts when the guest taps Open and repeats forever.
+  music: "audio/Parichayavade.mp3",
+
   // Closing section (bottom of the page)
   thanksQuote: "May your life together be full of love and your love be full of life.",
   thanks: "Thank you for being part of our journey",

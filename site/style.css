@@ -192,9 +192,7 @@ p,h1,h2,h3{margin:0}
 @keyframes tugL{50%{transform:translateX(-16px) rotate(90deg)}}
 @keyframes tugR{50%{transform:translateX(16px) rotate(-90deg)}}
 .hint{position:absolute;z-index:4;left:0;right:0;bottom:.6rem;display:flex;flex-direction:column;align-items:center;gap:.2rem;opacity:calc(1 - var(--p)*4)}
-.swipe-hand{width:50px;height:auto;filter:drop-shadow(0 6px 8px rgba(0,0,0,.35));animation:swipe 2s ease-in-out infinite}
-@keyframes swipe{0%{transform:translateY(34px);opacity:0}20%{opacity:1}70%{transform:translateY(-22px);opacity:1}100%{transform:translateY(-34px);opacity:0}}
-.hint span{font:700 .7rem var(--serif);letter-spacing:.35em;text-transform:uppercase;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.55)}
+.hint span{font:700 .72rem var(--serif);letter-spacing:.35em;text-transform:uppercase;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.55)}
 
 
 /* ===== The Celebration cards (stacked, mobile first) ===== */
